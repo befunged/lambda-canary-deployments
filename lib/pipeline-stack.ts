@@ -28,7 +28,7 @@ export class PipelineStack extends cdk.Stack {
     })
 
     const stagingStage = new StagingStage(this, 'staging', {
-      env: { region: process.env.region || 'us-east-2' },
+      env: { region: process.env.region || 'eu-west-1' },
     })
     pipeline.addApplicationStage(stagingStage)
   }

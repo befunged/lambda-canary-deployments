@@ -5,5 +5,5 @@ import { PipelineStack } from '../lib/pipeline-stack'
 
 const app = new cdk.App()
 new PipelineStack(app, 'PipelineStack', {
-  env: { region: process.env.REGION || 'us-east-2' },
+  env: { region: process.env.REGION || 'eu-west-1' },
 })
