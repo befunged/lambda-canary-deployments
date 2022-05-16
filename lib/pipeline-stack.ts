@@ -16,7 +16,7 @@ export class PipelineStack extends cdk.Stack {
       sourceAction: new codepipelineActions.GitHubSourceAction({
         actionName: 'GH',
         output: sourceArtifact,
-        oauthToken: cdk.SecretValue.secretsManager('github-token'),
+        oauthToken: cdk.SecretValue.secretsManager('github_token'),
         owner: 'befunged',
         repo: 'lambda-canary-deployments',
         branch: 'main',
