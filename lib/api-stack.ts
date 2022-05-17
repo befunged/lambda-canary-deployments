@@ -54,6 +54,7 @@ export class ApiStack extends cdk.Stack {
                 statistic: 'sum',
                  dimensionsMap: {
                      ApiName: 'restApi',
+                     stage: 'staging',
                 },
                 period: cdk.Duration.minutes(1),
             }),
