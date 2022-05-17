@@ -29,7 +29,7 @@ export class ApiStack extends cdk.Stack {
         const failureAlarm = new cw.Alarm(this, 'lambdaFailure', {
             alarmDescription: 'The latest deployment errors > 0',
             metric: new cw.Metric({
-                metricName: 'Errors',
+                metricName: '5XXError',
                 namespace: 'AWS/Lambda',
                 statistic: 'sum',
                 dimensionsMap: {
