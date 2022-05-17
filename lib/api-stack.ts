@@ -46,6 +46,11 @@ export class ApiStack extends cdk.Stack {
             alias: stage,
             deploymentConfig: cd.LambdaDeploymentConfig.CANARY_10PERCENT_5MINUTES,
             alarms: [failureAlarm],
+            autoRollback: {
+                failedDeployment: true, // default: true
+                stoppedDeployment: true, // default: false
+                deploymentInAlarm: true, // default: true if you provided any alarms, false otherwise
+            },
         })
 
         this.apiURL = new cdk.CfnOutput(this, 'apiURL', {
