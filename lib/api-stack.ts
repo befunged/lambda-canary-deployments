@@ -22,11 +22,13 @@ export class ApiStack extends cdk.Stack {
 
         // API endpoint
         const api = new apiGw.LambdaRestApi(this, 'restApi', {
+            restApiName: 'restApi',
             handler: stage,
             deployOptions: {stageName: 'staging'},
         })
 
         const lambdaErrorsAlarm = new cw.Alarm(this, 'lambdaFailure', {
+            alarmName: 'lambdaFailure',
             alarmDescription: 'Lambda latest deployment errors > 0',
             metric: new cw.Metric({
                 metricName: 'Errors',
@@ -43,6 +45,7 @@ export class ApiStack extends cdk.Stack {
         })
 
         const apiGateway500sAlarm = new cw.Alarm(this, 'apigwFailure', {
+            alarmName: 'apigwFailure',
             alarmDescription: 'API gateway latest deployment errors > 0',
             metric: new cw.Metric({
                 metricName: '5XXError',
@@ -66,7 +69,7 @@ export class ApiStack extends cdk.Stack {
                 failedDeployment: true, // default: true
                 stoppedDeployment: true, // default: false
                 deploymentInAlarm: true, // default: true if you provided any alarms, false otherwise
-  },
+            },
         })
 
         this.apiURL = new cdk.CfnOutput(this, 'apiURL', {

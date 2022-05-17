@@ -4,7 +4,7 @@ export const handler: ProxyHandler = async (event) => {
 
     return {
         body: JSON.stringify({
-            message: 'API version 9 - add api gw alarm',
+            message: 'API version 10 - name stuff',
             path: event.path,
         }),
         headers: {'Content-Type': 'application/json'},
