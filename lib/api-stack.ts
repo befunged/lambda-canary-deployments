@@ -4,6 +4,7 @@ import * as cd from '@aws-cdk/aws-codedeploy'
 import * as cw from '@aws-cdk/aws-cloudwatch'
 import * as lambda from '@aws-cdk/aws-lambda'
 import {Lambda} from './helpers'
+import { TreatMissingData } from '@aws-cdk/aws-cloudwatch'
 
 const aliasName = 'stage'
 
@@ -59,6 +60,7 @@ export class ApiStack extends cdk.Stack {
             }),
             threshold: 1,
             evaluationPeriods: 1,
+            treatMissingData: TreatMissingData.MISSING
         })
 
         new cd.LambdaDeploymentGroup(this, 'canaryDeployment', {
