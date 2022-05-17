@@ -42,7 +42,6 @@ export class ApiStack extends cdk.Stack {
             }),
             threshold: 1,
             evaluationPeriods: 1,
-            actionsEnabled: true,
         })
 
         const apiGateway500sAlarm = new cw.Alarm(this, 'apigwFailure', {
@@ -54,13 +53,12 @@ export class ApiStack extends cdk.Stack {
                 statistic: 'sum',
                  dimensionsMap: {
                      ApiName: 'restApi',
-                     stage: 'staging',
+                     Stage: 'staging',
                 },
                 period: cdk.Duration.minutes(1),
             }),
             threshold: 1,
             evaluationPeriods: 1,
-            actionsEnabled: true,
         })
 
         new cd.LambdaDeploymentGroup(this, 'canaryDeployment', {
