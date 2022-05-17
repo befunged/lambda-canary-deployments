@@ -26,10 +26,10 @@ export class ApiStack extends cdk.Stack {
             deployOptions: {stageName: 'staging'},
         })
 
-        const failureAlarm = new cw.Alarm(this, 'lambdaFailure', {
-            alarmDescription: 'The latest deployment errors > 0',
+        const lambdaErrorsAlarm = new cw.Alarm(this, 'lambdaFailure', {
+            alarmDescription: 'Lambda latest deployment errors > 0',
             metric: new cw.Metric({
-                metricName: '5XXError',
+                metricName: 'Errors',
                 namespace: 'AWS/Lambda',
                 statistic: 'sum',
                 dimensionsMap: {
@@ -42,15 +42,31 @@ export class ApiStack extends cdk.Stack {
             evaluationPeriods: 1,
         })
 
+        const apiGateway500sAlarm = new cw.Alarm(this, 'apigwFailure', {
+            alarmDescription: 'API gateway latest deployment errors > 0',
+            metric: new cw.Metric({
+                metricName: '5XXError',
+                namespace: 'AWS/APIGateway',
+                statistic: 'sum',
+                // dimensionsMap: {
+                //     ApiName: `${api.functionName}:${aliasName}`,
+                //     FunctionName: handler.functionName,
+                // },
+                period: cdk.Duration.minutes(1),
+            }),
+            threshold: 1,
+            evaluationPeriods: 1,
+        })
+
         new cd.LambdaDeploymentGroup(this, 'canaryDeployment', {
             alias: stage,
             deploymentConfig: cd.LambdaDeploymentConfig.CANARY_10PERCENT_5MINUTES,
-            alarms: [failureAlarm],
+            alarms: [lambdaErrorsAlarm, apiGateway500sAlarm],
             autoRollback: {
                 failedDeployment: true, // default: true
                 stoppedDeployment: true, // default: false
                 deploymentInAlarm: true, // default: true if you provided any alarms, false otherwise
-            },
+  },
         })
 
         this.apiURL = new cdk.CfnOutput(this, 'apiURL', {
