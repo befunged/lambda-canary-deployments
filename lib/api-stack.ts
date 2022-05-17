@@ -42,6 +42,7 @@ export class ApiStack extends cdk.Stack {
             }),
             threshold: 1,
             evaluationPeriods: 1,
+            actionsEnabled: true,
         })
 
         const apiGateway500sAlarm = new cw.Alarm(this, 'apigwFailure', {
@@ -51,14 +52,14 @@ export class ApiStack extends cdk.Stack {
                 metricName: '5XXError',
                 namespace: 'AWS/APIGateway',
                 statistic: 'sum',
-                // dimensionsMap: {
-                //     ApiName: `${api.functionName}:${aliasName}`,
-                //     FunctionName: handler.functionName,
-                // },
+                 dimensionsMap: {
+                     ApiName: 'restApi',
+                },
                 period: cdk.Duration.minutes(1),
             }),
             threshold: 1,
             evaluationPeriods: 1,
+            actionsEnabled: true,
         })
 
         new cd.LambdaDeploymentGroup(this, 'canaryDeployment', {
